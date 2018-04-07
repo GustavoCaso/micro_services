@@ -1,5 +1,5 @@
 all:
-	# Write your build command(s) here
+	rackup -p 4000
 
 test:
 	# Write your test command(s) here

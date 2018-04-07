@@ -2,20 +2,20 @@ version: '3'
 
 services:
   redis:
-    image: redis    
+    image: redis
     ports:
       - "6379:6379"
 
   nsqlookupd:
     image: nsqio/nsq
-    command: /nsqlookupd    
+    command: /nsqlookupd
     ports:
       - "4160:4160"
       - "4161:4161"
 
   nsqd:
     image: nsqio/nsq
-    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --broadcast-address=127.0.0.1    
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --broadcast-address=127.0.0.1
     links:
       - nsqlookupd:nsqlookupd
     ports:
@@ -23,7 +23,7 @@ services:
       - "4151:4151"
 
   nsqadmin:
-    image: nsqio/nsq    
+    image: nsqio/nsq
     ports:
       - "4171:4171"
     links:

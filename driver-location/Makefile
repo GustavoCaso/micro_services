@@ -1,5 +1,6 @@
 all:
-	# Write your build command(s) here
+	ruby lib/listener.rb
+	rackup -p 4002
 
 test:
 	# Write your test command(s) here
