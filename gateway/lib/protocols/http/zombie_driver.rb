@@ -7,9 +7,15 @@ module Protocols
       def call(params)
         driver_id = params[:id]
         return default_response unless driver_id
-        result = http_client.get("http://localhost:4001/drivers/#{driver_id}")
+        result = http_client.get(zombie_driver_url(driver_id))
         return default_response if result.failure?
         JSON.parse(result.value).to_json
+      end
+
+      private
+
+      def zombie_driver_url(driver_id)
+        "http://#{ENV['ZOMBIE_DRIVER_DOMAIN']}:#{ENV['ZOMBIE_DRIVER_PORT']}/drivers/#{driver_id}"
       end
 
       def default_response

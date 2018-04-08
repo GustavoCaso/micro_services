@@ -2,6 +2,7 @@
 require 'rubygems'
 require "bundler/setup"
 
+require 'dotenv/load'
 require 'sinatra'
 require 'yaml'
 require 'json'

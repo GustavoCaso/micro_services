@@ -8,6 +8,9 @@ gem 'sinatra'
 gem 'pry-byebug'
 gem 'nsq-ruby'
 
+# Development
+gem 'dotenv'
+
 # Testing
 gem 'rspec'
 gem 'webmock'
