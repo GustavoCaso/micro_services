@@ -11,3 +11,4 @@ gem 'nsq-ruby'
 # Testing
 gem 'rspec'
 gem 'webmock'
+gem 'rack-test'
