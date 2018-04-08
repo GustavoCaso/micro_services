@@ -1,14 +1,7 @@
-require_relative '../http_request'
+# frozen_string_literal: true
+require_relative 'http/zombie_driver'
 
 module Protocols
-  class ZombieDriver
-    def self.call(params)
-      driver_id = params[:id]
-      response = HttpRequest.get("http://localhost:4001/drivers/#{driver_id}")
-      JSON.parse(response.body).to_json
-    end
-  end
-
   class Http
     attr_reader :host
 
@@ -19,7 +12,7 @@ module Protocols
     def call(params)
       case host
       when 'zombie-driver'
-        ZombieDriver.call(params)
+        ZombieDriver.new.call(params)
       end
     end
   end
