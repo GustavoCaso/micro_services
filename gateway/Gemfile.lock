@@ -34,7 +34,6 @@ GEM
       rack (~> 2.0)
       rack-protection (= 2.0.1)
       tilt (~> 2.0)
-    sinatra-cross_origin (0.4.0)
     tilt (2.0.8)
 
 PLATFORMS
@@ -45,7 +44,6 @@ DEPENDENCIES
   pry-byebug
   rspec
   sinatra
-  sinatra-cross_origin
 
 BUNDLED WITH
    1.16.1
