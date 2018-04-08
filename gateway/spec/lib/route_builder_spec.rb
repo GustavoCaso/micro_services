@@ -7,9 +7,9 @@ RSpec.describe RouteBuilder do
   context 'when valid arguments' do
     let(:url_hash) do
       {
-        "path"=>"/drivers/:id",
-        "method"=>"GET",
-        "http"=>{"host"=>"zombie-driver"}
+        'path' => '/drivers/:id',
+        'method' => 'GET',
+        'http' => { 'host' => 'zombie-driver' }
       }
     end
 
@@ -19,7 +19,7 @@ RSpec.describe RouteBuilder do
     end
 
     it 'creates the right protocol builder' do
-      expect(Protocols::Http).to receive(:new).with({"host"=>"zombie-driver"})
+      expect(Protocols::Http).to receive(:new).with('host' => 'zombie-driver')
       subject.call(url_hash)
     end
   end
@@ -27,8 +27,8 @@ RSpec.describe RouteBuilder do
   context 'when any of the keys are missing it will not do anything' do
     let(:url_hash) do
       {
-        "method"=>"GET",
-        "http"=>{"host"=>"zombie-driver"}
+        'method' => 'GET',
+        'http' => { 'host' => 'zombie-driver' }
       }
     end
 
