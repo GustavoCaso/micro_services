@@ -14,8 +14,8 @@ module Services
       end
 
       def call(params)
-        id = params[:id]
-        rest_params = params.reject { |k, _| k == :id }
+        id = params['id']
+        rest_params = params.reject { |k, _| k == 'id' }
         return failure('Missing ID') unless id
         key = Keys::COORDINATES.call(id)
         min, max = time_frame_calculator.call(rest_params)
