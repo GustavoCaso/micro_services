@@ -5,6 +5,11 @@ source "https://rubygems.org"
 git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem 'sinatra'
-gem 'sinatra-cross_origin'
 gem 'pry-byebug'
+# Development
+gem 'dotenv'
+
+# Testing
 gem 'rspec'
+gem 'webmock'
+gem 'rack-test'
