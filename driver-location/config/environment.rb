@@ -1,5 +1,7 @@
 require 'rubygems'
 require "bundler/setup"
+
+require 'dotenv/load'
 require 'sinatra'
 require 'json'
 
@@ -10,4 +12,3 @@ APP_NAME = APP_ROOT.basename.to_s
 
 # load lib folder
 Dir[APP_ROOT.join('lib', '**/*.rb')].each { |file| require file }
-

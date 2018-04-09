@@ -5,10 +5,17 @@ source "https://rubygems.org"
 git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem 'sinatra'
-gem 'sinatra-cross_origin'
+
 gem 'pry-byebug'
+
 gem 'rspec'
+
 gem 'nsq-ruby'
+
 gem 'redis'
+
+gem 'dotenv'
+
 gem 'foreman'
 gem 'rake'
+
