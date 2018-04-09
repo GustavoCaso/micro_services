@@ -15,8 +15,19 @@ RSpec.describe 'Drivers endpoint' do
   context 'when service return valid result' do
     it 'returns response' do
       expect(Services::Redis::CoordinatesQuery).to receive_message_chain(:new, :call).
-        with('678').and_return(success_result)
+        with(id: '678').and_return(success_result)
       get '/drivers/678/locations'
+      expect(last_response).to be_ok
+      expect(last_response.body).to eq('{}')
+      expect(last_response.status).to eq 200
+    end
+  end
+
+  context 'when time range params are present' do
+    it 'returns response' do
+      expect(Services::Redis::CoordinatesQuery).to receive_message_chain(:new, :call).
+        with({id: '678', minutes: '5'}).and_return(success_result)
+      get '/drivers/678/locations?minutes=5'
       expect(last_response).to be_ok
       expect(last_response.body).to eq('{}')
       expect(last_response.status).to eq 200
@@ -26,7 +37,7 @@ RSpec.describe 'Drivers endpoint' do
   context 'when service return invalid result' do
     it 'returns response' do
       expect(Services::Redis::CoordinatesQuery).to receive_message_chain(:new, :call).
-        with('678').and_return(failure_result)
+        with(id: '678').and_return(failure_result)
       get '/drivers/678/locations'
       expect(last_response).to_not be_ok
       expect(last_response.body).to eq('')
