@@ -3,4 +3,5 @@ all:
 	rackup -p 4002
 
 test:
-	# Write your test command(s) here
+	bundle install
+	bundle exec rspec
