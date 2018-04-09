@@ -2,7 +2,7 @@ get '/drivers/:id' do
   content_type :json
 
   driver_id = params[:id]
-  response = HttpRequest.get("http://localhost:4002/drivers/#{driver_id}/locations")
+  response = Services::HttpRequest.get("http://localhost:4002/drivers/#{driver_id}/locations")
   body = response.body
   result = JSON.parse(body)
   first_coordinates = [result[0]['longitude'].to_f,  result[0]['latitude'].to_f]
