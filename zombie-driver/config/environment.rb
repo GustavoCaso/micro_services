@@ -1,6 +1,8 @@
 # Require gems we care about
 require 'rubygems'
 require "bundler/setup"
+require 'dotenv/load'
+
 require 'json'
 
 require 'sinatra'
