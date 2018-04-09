@@ -9,7 +9,7 @@ module Protocols
         return default_response unless driver_id
         result = http_client.get(zombie_driver_url(driver_id))
         return default_response if result.failure?
-        JSON.parse(result.value).to_json
+        [200, JSON.parse(result.value).to_json]
       end
 
       private
@@ -19,7 +19,7 @@ module Protocols
       end
 
       def default_response
-        {}.to_json
+        [500, {}.to_json]
       end
     end
   end

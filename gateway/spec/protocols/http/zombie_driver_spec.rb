@@ -19,13 +19,20 @@ RSpec.describe Protocols::Http::ZombieDriver do
       expect(JSON).to receive(:parse).with('{}')
       subject.call(params)
     end
+
+    it 'returns valid response' do
+      allow(http_client).to receive(:get).with("http://localhost:4001/drivers/#{id}").and_return(success_result)
+      allow(JSON).to receive(:parse).with('{}')
+      result = subject.call(params)
+      expect(result).to eq [200, "null"]
+    end
   end
 
   context 'when request return a non 200' do
     it 'returns default response' do
       allow(http_client).to receive(:get).with("http://localhost:4001/drivers/#{id}").and_return(failure_result)
       result = subject.call(params)
-      expect(result).to eq '{}'
+      expect(result).to eq [500, "{}"]
     end
   end
 
@@ -34,7 +41,7 @@ RSpec.describe Protocols::Http::ZombieDriver do
 
     it 'returns default response' do
       result = subject.call(params)
-      expect(result).to eq '{}'
+      expect(result).to eq [500, "{}"]
     end
   end
 end
