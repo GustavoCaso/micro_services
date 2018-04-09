@@ -1,4 +1,4 @@
-require_relative '../../../lib/services/redis/keys'
+require_relative '../../../../lib/services/redis/keys'
 
 RSpec.describe Services::Redis::Keys do
   context 'COORDINATES' do

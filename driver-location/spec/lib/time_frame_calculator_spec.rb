@@ -4,7 +4,7 @@ RSpec.describe Services::TimeFrameCalculator do
   subject { described_class.call }
 
   before do
-    # The time in UNIX for 2018 is 1514761200
+    # The time in Epoch for 2018 is 1514761200
     # So minus 5 minutes will alwas be the same result 1514760900
     expect(Time).to receive(:now).and_return(Time.new(2018))
   end

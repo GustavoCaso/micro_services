@@ -1,5 +1,5 @@
-require_relative '../../../lib/services/redis/keys'
-require_relative '../../../lib/services/redis/coordinates_query'
+require_relative '../../../../lib/services/redis/keys'
+require_relative '../../../../lib/services/redis/coordinates_query'
 
 RSpec.describe Services::Redis::CoordinatesQuery do
   let(:mock_redis) { double('REDIS').as_null_object }
@@ -39,17 +39,17 @@ RSpec.describe Services::Redis::CoordinatesQuery do
   context 'when no id is passed' do
     let(:id) { nil }
 
-    it 'gets the valid key' do
+    it 'does not get the valid key' do
       expect(Services::Redis::Keys::COORDINATES).to_not receive(:call)
       subject.call(id)
     end
 
-    it 'calculates the time frame' do
+    it 'does not calculates the time frame' do
       expect(mock_time_frame).to_not receive(:call)
       subject.call(id)
     end
 
-    it 'executes query against REDIS' do
+    it 'does not executes query' do
       expect(mock_redis).to_not receive(:zrangebyscore)
       subject.call(id)
     end
