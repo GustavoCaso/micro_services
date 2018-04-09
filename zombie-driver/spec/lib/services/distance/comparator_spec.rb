@@ -31,8 +31,28 @@ RSpec.describe Services::Distance::Comparator do
   end
 
   context 'when any of the two coordinates is missing' do
-    it 'returns the distance between the two coordinates in meters' do
+    it 'returns failure object' do
       madrid = { 'latitude' => 40.4165 }
+      paris = { 'latitude' => 48.8534, 'longitude' => -2.3488 }
+      result = described_class.call(madrid, paris)
+      expect(result).to be_a(Result::Failure)
+      expect(result.value).to eq('Missing Coordinates')
+    end
+  end
+
+  context 'when nil is passed' do
+    it 'returns failure object' do
+      madrid = nil
+      paris = { 'latitude' => 48.8534, 'longitude' => -2.3488 }
+      result = described_class.call(madrid, paris)
+      expect(result).to be_a(Result::Failure)
+      expect(result.value).to eq('Missing Coordinates')
+    end
+  end
+
+  context 'when non hash value is passed' do
+    it 'returns failure object' do
+      madrid = []
       paris = { 'latitude' => 48.8534, 'longitude' => -2.3488 }
       result = described_class.call(madrid, paris)
       expect(result).to be_a(Result::Failure)

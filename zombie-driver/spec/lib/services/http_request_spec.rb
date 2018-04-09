@@ -1,6 +1,6 @@
 require_relative '../../../lib/services/http_request'
 
-RSpec.describe HttpRequest do
+RSpec.describe Services::HttpRequest do
   subject { described_class.new }
 
   describe '#get' do

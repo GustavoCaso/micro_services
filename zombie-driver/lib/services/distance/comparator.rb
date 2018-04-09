@@ -44,8 +44,12 @@ module Services
         private
 
         def extract_coordinate(point)
-          return unless point['longitude'] && point['latitude']
+          return unless valid_point?(point)
           Coordinate.new(point['latitude'], point['longitude'])
+        end
+
+        def valid_point?(point)
+          point && point.is_a?(Hash) && point['longitude'] && point['latitude']
         end
       end
     end
