@@ -9,6 +9,7 @@ gem 'sinatra'
 gem 'pry-byebug'
 
 gem 'rspec'
+gem 'rack-test'
 
 gem 'nsq-ruby'
 

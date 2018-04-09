@@ -32,12 +32,18 @@ RSpec.describe Services::Redis::CoordinatesQuery do
       expected_result = redis_response.map { |r| JSON.parse(r) }
       allow(mock_redis).to receive(:zrangebyscore).and_return(redis_response)
       result = subject.call(id)
-      expect(result).to eq(expected_result)
+      expect(result).to be_a Result::Success
+      expect(result.value).to eq(expected_result)
     end
   end
 
   context 'when no id is passed' do
     let(:id) { nil }
+
+    it 'returns Result::failure' do
+      result = subject.call(id)
+      expect(result).to be_a Result::Failure
+    end
 
     it 'does not get the valid key' do
       expect(Services::Redis::Keys::COORDINATES).to_not receive(:call)
