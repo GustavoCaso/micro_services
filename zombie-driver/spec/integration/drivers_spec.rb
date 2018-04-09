@@ -36,7 +36,7 @@ RSpec.describe 'Drivers endpoint' do
     it "triggers Services::Distance" do
       expect(Services::Distance).to receive_message_chain(:new, :call).with('678').and_return(failure_result)
       get '/drivers/678'
-      expect(last_response).to be_ok
+      expect(last_response).to_not be_ok
       expect(last_response.body).to eq('{}')
     end
   end
