@@ -10,8 +10,8 @@ RSpec.describe Services::Redis::CoordinatesWriter do
       {
         'driver' => '1',
         'coordinates' => {
-          'longitude' => '1',
-          'latitude' => '2'
+          'longitude' => '156.890',
+          'latitude' => '56.768'
         }
       }
     end
@@ -55,12 +55,35 @@ RSpec.describe Services::Redis::CoordinatesWriter do
       {
         'driver' => '1',
         'coordinates' => {
-          'longitude' => '1',
-          'latitude' => '2'
+          'longitude' => '156.890',
+          'latitude' => '56.768'
         }
       }
     end
     let(:updated_at) { 'hello world' }
+
+    it 'does not gets the valid key' do
+      expect(Services::Redis::Keys::COORDINATES).to_not receive(:call)
+      subject.call(message, updated_at)
+    end
+
+    it 'does not stores the information' do
+      expect(mock_redis).to_not receive(:zadd)
+      subject.call(message, updated_at)
+    end
+  end
+
+  context 'when message has invalid coordinates' do
+    let(:message) do
+      {
+        'driver' => '1',
+        'coordinates' => {
+          'longitude' => '200.879',
+          'latitude' => '56.768'
+        }
+      }
+    end
+    let(:updated_at) { Time.new(2018) } # The time in Epoch for 2018 is 1514761200
 
     it 'does not gets the valid key' do
       expect(Services::Redis::Keys::COORDINATES).to_not receive(:call)
