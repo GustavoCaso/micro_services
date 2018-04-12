@@ -1,14 +1,22 @@
+require_relative '../../../../lib/services/redis'
 require_relative '../../../../lib/services/redis/keys'
 require_relative '../../../../lib/services/redis/coordinates_writer'
 
 RSpec.describe Services::Redis::CoordinatesWriter do
-  let(:mock_redis) { double('REDIS').as_null_object }
-  subject { described_class.new(redis: mock_redis) }
+  subject { described_class.new }
+
+  def id
+    @id ||= 'testing:coordinates_writer:2'
+  end
+
+  def key
+    @key ||= Services::Redis::Keys::COORDINATES.call(id)
+  end
 
   context 'when message has all the necessary data' do
     let(:message) do
       {
-        'driver' => '1',
+        'driver' => id,
         'coordinates' => {
           'longitude' => '156.890',
           'latitude' => '56.768'
@@ -17,17 +25,17 @@ RSpec.describe Services::Redis::CoordinatesWriter do
     end
     let(:updated_at) { Time.new(2018) } # The time in Epoch for 2018 is 1514761200
 
-    it 'gets the valid key' do
-      expect(Services::Redis::Keys::COORDINATES).to receive(:call).with(message['driver'])
-      subject.call(message, updated_at)
+    after do
+      REDIS.zremrangebyscore(key, 1514761200, 1514761201)
     end
 
     it 'stores the information with the valid score and message' do
-      key = 'drivers:coordinates:1'
-      score = updated_at.to_i
-      data = message['coordinates'].merge('updated_at' => updated_at.to_s).to_json
-      expect(mock_redis).to receive(:zadd).with(key, score, data)
       subject.call(message, updated_at)
+      redis_result = REDIS.zrangebyscore(key, 1514761200, 1514761201)
+      expected_result = [
+        '{"longitude":"156.890","latitude":"56.768","updated_at":"2018-01-01 00:00:00 +0100"}'
+      ]
+      expect(redis_result).to eq(expected_result)
     end
   end
 
@@ -45,7 +53,7 @@ RSpec.describe Services::Redis::CoordinatesWriter do
     end
 
     it 'does not stores the information' do
-      expect(mock_redis).to_not receive(:zadd)
+      expect(REDIS).to_not receive(:zadd)
       subject.call(message, updated_at)
     end
   end
@@ -68,7 +76,7 @@ RSpec.describe Services::Redis::CoordinatesWriter do
     end
 
     it 'does not stores the information' do
-      expect(mock_redis).to_not receive(:zadd)
+      expect(REDIS).to_not receive(:zadd)
       subject.call(message, updated_at)
     end
   end
@@ -91,7 +99,7 @@ RSpec.describe Services::Redis::CoordinatesWriter do
     end
 
     it 'does not stores the information' do
-      expect(mock_redis).to_not receive(:zadd)
+      expect(REDIS).to_not receive(:zadd)
       subject.call(message, updated_at)
     end
   end
