@@ -13,7 +13,7 @@ module Services
       result = http_request.get(locations_endpoint(driver_id))
       return failure(result.value) if result.failure?
       body = JSON.parse(result.value)
-      comparator.call(body.first, body.last)
+      comparator.new(body).call
     rescue JSON::JSONError => e
       failure(e.message)
     end

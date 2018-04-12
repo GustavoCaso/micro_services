@@ -15,8 +15,9 @@ RSpec.describe Services::Distance do
     end
 
     it 'executes get comparator with correct arguments' do
+      expect(comparator).to receive(:new).with([1,2]).and_return(comparator)
+      expect(comparator).to receive(:call)
       allow(http_client).to receive(:get).with('http://localhost:4002/drivers/345/locations').and_return(success_result)
-      expect(comparator).to receive(:call).with(1,2)
       subject.call(id)
     end
   end
