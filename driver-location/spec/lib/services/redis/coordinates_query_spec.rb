@@ -20,7 +20,6 @@ RSpec.describe Services::Redis::CoordinatesQuery do
   end
 
   context 'when there is data in redis' do
-
     before do
       key = Services::Redis::Keys::COORDINATES.call('testing:coordinates:query:1')
       coordinates_1 = { longitude: 1, latitude: 2 }
