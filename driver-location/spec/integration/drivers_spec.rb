@@ -9,36 +9,45 @@ RSpec.describe 'Drivers endpoint' do
     Sinatra::Application
   end
 
-  let(:failure_result) { double('Result::Failure', success?: false, failure?: true, value: 'Error') }
-  let(:success_result) { double('Result::Success', success?: true, failure?: false, value: {}) }
+  def id
+    @id ||= 'testing:drivers:endpoint:2'
+  end
 
   context 'when service return valid result' do
+    before(:each) do
+      expect_any_instance_of(Services::TimeFrameCalculator).to receive(:call).and_return([1,2])
+      key = Services::Redis::Keys::COORDINATES.call(id)
+      coordinates = { longitude: 1, latitude: 2 }
+      REDIS.zadd(key, 1, coordinates.to_json)
+    end
+
+    after(:each) do
+      key = Services::Redis::Keys::COORDINATES.call(id)
+      REDIS.zremrangebyscore(key, 1, 2)
+    end
+
     it 'returns response' do
-      expect(Services::Redis::CoordinatesQuery).to receive_message_chain(:new, :call).
-        with(id: '678').and_return(success_result)
-      get '/drivers/678/locations'
+      get "/drivers/#{id}/locations"
       expect(last_response).to be_ok
-      expect(last_response.body).to eq('{}')
+      expect(last_response.body).to eq("[{\"longitude\":1,\"latitude\":2}]")
       expect(last_response.status).to eq 200
     end
   end
 
-  context 'when time range params are present' do
-    it 'returns response' do
-      expect(Services::Redis::CoordinatesQuery).to receive_message_chain(:new, :call).
-        with({id: '678', minutes: '5'}).and_return(success_result)
-      get '/drivers/678/locations?minutes=5'
-      expect(last_response).to be_ok
-      expect(last_response.body).to eq('{}')
-      expect(last_response.status).to eq 200
+  context 'when service return invalid result due to JSON parse error' do
+    before(:each) do
+      expect_any_instance_of(Services::TimeFrameCalculator).to receive(:call).and_return([1,2])
+      key = Services::Redis::Keys::COORDINATES.call(id)
+      REDIS.zadd(key, 1, 'error')
     end
-  end
 
-  context 'when service return invalid result' do
+    after(:each) do
+      key = Services::Redis::Keys::COORDINATES.call(id)
+      REDIS.zremrangebyscore(key, 1, 2)
+    end
+
     it 'returns response' do
-      expect(Services::Redis::CoordinatesQuery).to receive_message_chain(:new, :call).
-        with(id: '678').and_return(failure_result)
-      get '/drivers/678/locations'
+      get "/drivers/#{id}/locations"
       expect(last_response).to_not be_ok
       expect(last_response.body).to eq('')
       expect(last_response.status).to eq 500
