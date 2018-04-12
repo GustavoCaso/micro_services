@@ -8,7 +8,7 @@ RSpec.describe Services::Redis::CoordinatesQuery do
 
   context 'when pass an id and time arguments' do
     let(:id) { 1 }
-    let(:params) { { id: id, minutes: 5 } }
+    let(:params) { { 'id' => id, 'minutes' => 5 } }
 
     it 'gets the valid key' do
       expect(Services::Redis::Keys::COORDINATES).to receive(:call).with(id)
@@ -16,7 +16,7 @@ RSpec.describe Services::Redis::CoordinatesQuery do
     end
 
     it 'calculates the time frame' do
-      expect(mock_time_frame).to receive(:call).with(minutes: 5)
+      expect(mock_time_frame).to receive(:call).with('minutes' => 5)
       subject.call(params)
     end
 
