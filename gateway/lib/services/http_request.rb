@@ -5,6 +5,7 @@ class HttpRequest
   include Result::Concern
 
   def get(url)
+    return failure('No url provided') unless url
     uri = URI.parse(url)
     request = Net::HTTP::Get.new(uri.request_uri)
     yield request if block_given?

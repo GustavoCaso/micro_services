@@ -1,3 +1,4 @@
+require 'dotenv/load'
 require 'webmock/rspec'
 ENV['RACK_ENV'] = 'test'
 

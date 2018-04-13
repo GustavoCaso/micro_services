@@ -5,9 +5,9 @@
 require_relative 'protocols'
 
 class RouteBuilder
-  ProtocolNotImplemented = Class.new(StandardError)
-
   attr_reader :app
+
+  PARAMS_REGEX = /\/?:(\w*)\/?/
 
   def initialize(app)
     @app = app
@@ -18,10 +18,13 @@ class RouteBuilder
     path = url['path']
 
     protocol_builder = extract_protocol_builder(url)
+
     return unless protocol_builder && method && path
 
+    params_form_path = path.scan(PARAMS_REGEX).flatten
+
     app.send(method.to_sym, path) do
-      protocol_builder.call(params)
+      protocol_builder.call(self, params_form_path)
     end
   end
 
