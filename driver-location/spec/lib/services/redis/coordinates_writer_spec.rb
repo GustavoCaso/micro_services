@@ -16,11 +16,9 @@ RSpec.describe Services::Redis::CoordinatesWriter do
   context 'when message has all the necessary data' do
     let(:message) do
       {
-        'driver' => id,
-        'coordinates' => {
-          'longitude' => '156.890',
-          'latitude' => '56.768'
-        }
+        'id' => id,
+        'longitude' => '156.890',
+        'latitude' => '56.768'
       }
     end
     let(:updated_at) { Time.new(2018) } # The time in Epoch for 2018 is 1514761200
@@ -42,7 +40,7 @@ RSpec.describe Services::Redis::CoordinatesWriter do
   context 'when message miss any of the keys' do
     let(:message) do
       {
-        'driver' => '1',
+        'id' => '1'
       }
     end
     let(:updated_at) { Time.new(2018) } # The time in Epoch for 2018 is 1514761200
@@ -61,11 +59,9 @@ RSpec.describe Services::Redis::CoordinatesWriter do
   context 'when message has all the keys but updated_at is not a Time instance' do
     let(:message) do
       {
-        'driver' => '1',
-        'coordinates' => {
-          'longitude' => '156.890',
-          'latitude' => '56.768'
-        }
+        'id' => '1',
+        'longitude' => '156.890',
+        'latitude' => '56.768'
       }
     end
     let(:updated_at) { 'hello world' }
@@ -84,11 +80,9 @@ RSpec.describe Services::Redis::CoordinatesWriter do
   context 'when message has invalid coordinates' do
     let(:message) do
       {
-        'driver' => '1',
-        'coordinates' => {
-          'longitude' => '200.879',
-          'latitude' => '56.768'
-        }
+        'id' => '1',
+        'longitude' => '200.879',
+        'latitude' => '56.768'
       }
     end
     let(:updated_at) { Time.new(2018) } # The time in Epoch for 2018 is 1514761200

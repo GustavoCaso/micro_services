@@ -14,18 +14,20 @@ module Services
       def call(message, updated_at)
         return unless enough_information?(message)
         return unless updated_at.is_a?(Time)
-        return unless valid_coordinates?(message['coordinates'])
+        coordinates = { 'longitude' => message['longitude'], 'latitude' => message['latitude'] }
+        return unless valid_coordinates?(coordinates)
         score = updated_at.to_i
-        key = Keys::COORDINATES.call(message['driver'])
-        data = message['coordinates'].merge('updated_at' => updated_at.to_s)
+        key = Keys::COORDINATES.call(message['id'])
+        data = coordinates.merge('updated_at' => updated_at.to_s)
         redis.zadd(key, score, data.to_json)
       end
 
       private
 
       def enough_information?(message)
-        (message['driver'] && !message['driver'].empty?) &&
-          (message['coordinates'] && !message['coordinates'].empty?)
+        (message['id'] && !message['id'].empty?) &&
+          (message['latitude'] && !message['latitude'].empty?) &&
+          (message['longitude'] && !message['longitude'].empty?)
       end
 
       def valid_coordinates?(coordinates)
