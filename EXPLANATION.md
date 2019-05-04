@@ -1,6 +1,4 @@
-### Heetch Challenge
-
-Exercise proposed to build an HTTP gateway and two microservices. This approach allows users only to use one API which will work as a _public facing service_
+### Challenge
 
 The endpoints for the Gateway API are:
 

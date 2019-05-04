@@ -1,22 +1,18 @@
-![Heetch](heetch.png)
+To support our growth, we have taken the microservice route. So let’s tackle the basics with a HTTP gateway that either forward requests or transforms them into [NSQ](https://github.com/nsqio/nsq) messages for asynchronous processing. Next we’ll add two services that perform most common tasks while transporting people from A to B.
 
-## Test
+Let’s get down to business.
 
-To support our growth, we have taken the microservice route. So let’s tackle the basics with a HTTP gateway that either forward requests or transforms them into [NSQ](https://github.com/nsqio/nsq) messages for asynchronous processing. Next we’ll add two services that perform most common tasks while transporting people from A to B. 
-
-Let’s get down to business. 
-
-All Heetch drivers are sending their current coordinates to the backend, every five seconds. Some drivers may be considered as zombies if they match a specific predicate. So we have an application that says if a driver is zombie or not. 
+All drivers are sending their current coordinates to the backend, every five seconds. Some drivers may be considered as zombies if they match a specific predicate. So we have an application that says if a driver is zombie or not.
 
 Thus, you will implement three services as following:
 
 - a `gateway` service, that either forward or transform requests to be processed synchronously or asynchronously
-- a `driver location` service, that consumes location update events and store them 
+- a `driver location` service, that consumes location update events and store them
 - a `zombie driver` service, that allows to check if a driver matches the zombie predicate or not
 
 ### 1. Gateway Service
-The `Gateway` service is a _public facing service_. 
-HTTP requests hitting this service are transformed into [NSQ](https://github.com/nsqio/nsq) messages or forwarded in HTTP to specific services.  
+The `Gateway` service is a _public facing service_.
+HTTP requests hitting this service are transformed into [NSQ](https://github.com/nsqio/nsq) messages or forwarded in HTTP to specific services.
 The gateway should use the provided `config.yaml` file to register endpoints.
 
 #### Public Endpoints
